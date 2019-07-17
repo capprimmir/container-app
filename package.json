@@ -1,0 +1,23 @@
+{
+  "name": "imagini-serv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "imagini.js",
+  "scripts": {
+    "test": "node test/run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1",
+    "sharp": "^0.22.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4"
+  }
+}
