@@ -16,4 +16,4 @@ dist: trusty
 sudo: required
 
 before_script:
-  - mysql -e "CREATE DATABASE IF NOT EXIXTS microservice;"
+  - mysql -e "CREATE DATABASE IF NOT EXISTS microservice;"
