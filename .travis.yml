@@ -7,4 +7,4 @@ cache:
 services:
   - mysql
 before_script:
-  - mysql -e "CREATE DATABASE IF NOT EXIST microservice"
+  - mysql -e "CREATE DATABASE IF NOT EXISTS microservice"
