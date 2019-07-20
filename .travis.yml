@@ -6,5 +6,6 @@ cache:
     - "node_modules"
 services:
   - mysql
-before_script:
+before_install:
+  - mysql -u root --password=""
   - mysql -e "CREATE DATABASE IF NOT EXISTS microservice"
