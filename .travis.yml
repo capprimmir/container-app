@@ -15,5 +15,6 @@ addons:
 dist: trusty
 sudo: required
 
-before_script:
+before_install:
+  - mysql -u root --password=""
   - mysql -e "CREATE DATABASE IF NOT EXISTS microservice;"
