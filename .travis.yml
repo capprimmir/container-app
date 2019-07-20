@@ -6,6 +6,16 @@ cache:
     - "node_modules"
 services:
   - mysql
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+dist: trusty
+sudo: required
+
 before_install:
-  - mysql -u root --password=""
-  - mysql -e "CREATE DATABASE IF NOT EXISTS microservice"
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('pass12') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -pnew_password
+  - sudo service mysql restart
