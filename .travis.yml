@@ -6,3 +6,5 @@ cache:
     - "node_modules"
 services:
   - mysql
+before_script:
+  - mysql -e "CREATE DATABASE IF NOT NOT EXIST microservice"
