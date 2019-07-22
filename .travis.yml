@@ -8,5 +8,6 @@ cache:
     - "node_modules"
 services:
   - mysql
-before_script:
-  - mysql -u root --password="" < test/travis.sql
+before_install:
+  - mysql -u root --password="pass123"
+  - mysql -e "CREATE DATABSE IF NOT EXISTS microservice"
