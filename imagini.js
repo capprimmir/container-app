@@ -4,16 +4,21 @@ const bodyparser = require("body-parser");
 const path = require("path");
 const fs = require("fs");
 const app = express();
-const settings = require("./settings");
+//const settings = require("./settings");
 const mysql = require("mysql");
 
-const db = mysql.createConnection(settings.db);
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'pass123',
+  database: 'microservice'
+});
 app.db = db;
 
 db.connect(err => {
   if (err) throw err;
 
-  // console.log("db: ready");
+  console.log("db: ready");
 
   const createTable = () =>
     db.query(
