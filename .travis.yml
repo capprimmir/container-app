@@ -10,6 +10,6 @@ services:
   - mysql
 before_install:
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('pass123') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
-  - sudo mysql_upgrade -u root -p pass123
+  - sudo mysql_upgrade -u root -ppass123
   - mysql -e 'CREATE DATABASE IF NOT EXISTS microservice;'
   - sudo service mysql restart
