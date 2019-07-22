@@ -9,5 +9,5 @@ services:
   - mysql
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS microservice;'
-  - sudo mysql -e 'SET PASSWORD FOR "root"@"127.0.0.1" = PASSWORD=("pass123");FLUSH PRIVILEGES;'
+  - sudo mysqladmin -u root password "pass123"
   - sudo service mysql restart
