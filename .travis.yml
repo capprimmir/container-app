@@ -9,4 +9,7 @@ cache:
 services:
   - mysql
 before_install:
-  - mysql -u root --password=""
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('pass123') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -pnew_password
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS microservice;'
+  - sudo service mysql restart
