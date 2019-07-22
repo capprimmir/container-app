@@ -8,5 +8,5 @@ cache:
     - "node_modules"
 services:
   - mysql
-before_script:
+before_install:
   - mysql -u root --password="pass123" < test/travis.sql
