@@ -10,4 +10,4 @@ services:
   - mysql
 before_install:
   - mysql -u root --password=""
-  - mysql -e "CREATE DATABSE IF NOT EXISTS microservice;"
+  - mysql -e "CREATE DATABASE IF NOT EXISTS microservice;"
