@@ -13,7 +13,7 @@ app.db = db;
 db.connect(err => {
   if (err) throw err;
 
-  console.log("db: ready");
+  // console.log("db: ready");
 
   const createTable = () =>
     db.query(
