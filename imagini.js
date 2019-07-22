@@ -8,9 +8,9 @@ const app = express();
 const mysql = require("mysql");
 
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'root',
-  password: 'pass123',
+  password: '',
   database: 'microservice'
 });
 app.db = db;
