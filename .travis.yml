@@ -8,6 +8,7 @@ cache:
 services:
   - mysql
 before_install:
+  - sudo ifconfig
   - mysql -e 'CREATE DATABASE IF NOT EXISTS microservice;'
   - sudo mysqladmin -u root password "pass123"
   - sudo service mysql restart

@@ -8,10 +8,10 @@ const app = express();
 const mysql = require("mysql");
 
 const db = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root',
-  password: 'pass123',
-  database: 'microservice'
+  host: process.env.DB_HOST,
+  user: "root",
+  password: "pass123",
+  database: "microservice"
 });
 app.db = db;
 
@@ -62,7 +62,8 @@ db.connect(err => {
     }),
     (req, res) => {
       db.query(
-        "INSERT INTO images SET ?", {
+        "INSERT INTO images SET ?",
+        {
           name: req.params.name,
           size: req.body.length,
           data: req.body
@@ -90,9 +91,13 @@ db.connect(err => {
 
   app.get("/uploads/:image", (req, res) => {
     if (Object.keys(req.query).length === 0) {
-      db.query("UPDATE images SET date_used = UTC_TIMESTAMP WHERE id = ?",
-        [req.image.id]);
-      res.setHeader("Content-Type", "image/" + path.extname(req.image.name).substr(1));
+      db.query("UPDATE images SET date_used = UTC_TIMESTAMP WHERE id = ?", [
+        req.image.id
+      ]);
+      res.setHeader(
+        "Content-Type",
+        "image/" + path.extname(req.image.name).substr(1)
+      );
       return res.end(req.image.data);
     }
 
