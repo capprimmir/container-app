@@ -12,3 +12,5 @@ before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS microservice;'
   - sudo mysqladmin -u root password "pass123"
   - sudo service mysql restart
+  - mysql -e 'USE microservice;'
+  - mysql -e 'SHOW TABLES;'
