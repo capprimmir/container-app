@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: rethinkdb-master
+spec:
+  serviceName: rethinkdb-master
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rethinkdb-master
+    spec:
+      hostname: rethinkdb-master
+      containers:
+        - name: rethinkdb
+          image: rethinkdb:2.3.6
+          command: ["rethinkdb"]
+          args:
+            - --bind
+            - "all"
+            - --canonical-address
+            - "rethinkdb-master:29015"
+            - --canonical-address
+            - "$(MY_POD_IP):29015"
+          volumeMounts:
+            - name: rdb-local-data
+              mountPath: /data
+          env:
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+      volumes:
+        - name: rdb-local-data
+          hostPath:
+            path: /var/data/rethinkdb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rethinkdb-master
+  labels:
+    app: rethinkdb-master
+spec:
+  ports:
+    - port: 28015
+      name: rdb-api
+    - port: 29015
+      name: rdb-cluster-api
+  selector:
+    app: rethinkdb-master
