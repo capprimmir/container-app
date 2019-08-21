@@ -13,21 +13,25 @@ const db = mysql.createConnection({
   database: "microservice"
 });
 
+// feature decoupling
 const imageFeature = (req, res, next) => {
-  let number = Math.round(Math.random() * 10);
-  // use slice ans split to grab last part of url 
+
+  //use split to separate the query string and pass it to the redirect. This will contain the params needed.
   const queryString = splitUrl(req.url);
-  console.log('Query string:', queryString);
-  let imageName = 'test.png'
-  console.log('Number: ', number)
+  logger.info(`Image query string: ${queryString}`);
+
+  let number = Math.round(Math.random() * 10);
+  logger.debug(`Using new image feature. Targeted by number: ${number}`);
+  
   if (number <= 5) {
+    logger.debug(`${number}: Number less than 5 do not apply new image feature`);
     console.log(req.url);
     next();
   }
   else {
-    console.log('Bigger than 5')
+    logger.debug(`${number}: Greater than 5, applies new image feature`);
     console.log(req.url);
-    //use split to separate the query string and pass it to the redirect. This will contain the params needed. 
+     
     res.redirect(`/uploads/feature/${queryString}`)
   }
 }
@@ -50,7 +54,7 @@ db.connect(err => {
   console.log('Connected');
   logger.info("Connection to database sucessfull");
 
-  logger.info("Creating table images if does not exists")
+  logger.debug("Creating table images if does not exists")
   const createTable = () =>
     db.query(
       `CREATE TABLE IF NOT EXISTS images
@@ -68,6 +72,7 @@ db.connect(err => {
     ENGINE=InnoDB DEFAULT CHARSET=utf8`
     );
   createTable();
+  logger.info("Table images created sucessfully")
   
   app.param("image", (req, res, next, image) => {
     if (!image.match(/\.(png|jpg)$/i)) {
@@ -92,6 +97,7 @@ db.connect(err => {
       type: "image/*"
     }),
     (req, res) => {
+      log.debug("Uploading image");
       db.query(
         "INSERT INTO images SET ?", {
           name: req.params.name,
@@ -100,6 +106,7 @@ db.connect(err => {
         },
         err => {
           if (err) {
+            logger.error("Image could not be save to database")
             console.log(err);
             return res.send({
               status: "error",
@@ -107,6 +114,7 @@ db.connect(err => {
             });
           }
 
+          logger.info("Image sucessfully saved to database")
           res.send({
             status: "ok",
             size: req.body.length
@@ -121,7 +129,7 @@ db.connect(err => {
   });
 
   app.get("/uploads/feature/:image", (req, res) => {
-    console.log('In feature');
+    logger.info(`Redirected to image feature end point: /uploads/feature${req.url}`);
     if (Object.keys(req.query).length === 0) {
       db.query("UPDATE images SET date_used = UTC_TIMESTAMP WHERE id = ?", [
         req.image.id
@@ -137,7 +145,10 @@ db.connect(err => {
     let width = +req.query.width;
     let height = +req.query.height;
     let blur = +req.query.blur;
-    let sharpen = 5;
+
+    //apply sharp to the image
+    let sharpen = 20;
+
     let greyscale = ["y", "yes", "1", "on"].includes(req.query.greyscale);
     let flip = ["y", "yes", "1", "on"].includes(req.query.flip);
     let flop = ["y", "yes", "1", "on"].includes(req.query.flop);
@@ -167,8 +178,6 @@ db.connect(err => {
     );
 
     image.pipe(res);
-
-
   })
 
   app.get("/uploads/:image", (req, res) => {

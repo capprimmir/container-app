@@ -4,8 +4,8 @@ const {
   transports
 } = require('winston');
 
-const env = process.env.NODE_ENV || 'development';
-//const env = process.env.NODE_ENV || 'production';
+//const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'production';
 
 const logformat = format.combine(
   format.colorize(),
